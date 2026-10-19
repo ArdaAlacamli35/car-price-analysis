@@ -2,7 +2,7 @@
 
 *Used car price prediction on ~530k US auction sales with Gradient Boosting, Random Forest and Linear Regression. Notebook in Turkish.*
 
-Manisa Celal Bayar Üniversitesi, Büyük Veri Analistliği programı, dönem projesi.
+Arda Alaçamlı, Büyük Veri Analistliği öğrencisi (Manisa Celal Bayar Üniversitesi). İlk versiyonu dönem projesi olarak hazırlandı, sonra baştan yeniden geliştirildi.
 
 **Soru:** Bir ikinci el aracın satış fiyatını markası, modeli, yaşı, kilometresi ve durumu gibi bilgilerden tahmin edebilir miyim? Fiyatı en çok ne etkiliyor?
 
