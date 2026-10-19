@@ -1,51 +1,51 @@
 # İkinci El Araç Fiyat Tahmini
 
-*Predicting used car prices with machine learning (Random Forest, XGBoost, Linear Regression). Notebook in Turkish.*
+*Used car price prediction on ~530k US auction sales with Gradient Boosting, Random Forest and Linear Regression. Notebook in Turkish.*
 
 Manisa Celal Bayar Üniversitesi, Büyük Veri Analistliği programı, dönem projesi.
 
-Bir ikinci el aracın satış fiyatını marka, model, yıl, kasa tipi ve kat ettiği mesafe gibi özelliklerinden tahmin eden ve fiyatı en çok hangi özelliklerin belirlediğini inceleyen bir makine öğrenmesi projesi.
+**Soru:** Bir ikinci el aracın satış fiyatını markası, modeli, yaşı, kilometresi ve durumu gibi bilgilerden tahmin edebilir miyim? Fiyatı en çok ne etkiliyor?
 
 ## Sonuçlar
 
-| Model | R² (test) | Ortalama mutlak hata (MAE) |
+Temizlikten sonra kalan **528.743 satış** ile üç model denendi:
+
+| Model | R² (test) | Ortalama hata (MAE) |
 |---|---|---|
-| Doğrusal Regresyon | %46,6 | 4.324 $ |
-| XGBoost | %88,5 | 1.773 $ |
-| **Random Forest** | **%91,9** | **1.446 $** |
+| **Gradient Boosting** | **%95,8** | **1.199 $** |
+| Random Forest | %95,3 | 1.225 $ |
+| Doğrusal Regresyon | %69,7 | 3.504 $ |
 
-- En iyi model **Random Forest**. Eğitim (%93,6) ve test (%91,9) başarısı birbirine yakın, yani model veriyi ezberlemiyor.
-- Fiyatı en çok etkileyen özellik **aracın kat ettiği mesafe** (`odometer`). Ardından **kasa tipi** ve **model yılı** geliyor.
-- Doğrusal regresyonun düşük kalması, fiyat ile özellikler arasındaki ilişkinin doğrusal olmadığını gösteriyor.
+- Fiyatı en çok etkileyenler: **mesafe**, **kasa tipi** ve **marka**.
+- Eğitim (%96,5) ve test (%95,8) başarısı neredeyse aynı, yani model ezberlemiyor.
+- 10-50 bin $ arasındaki araçlarda ortalama hata fiyatın yaklaşık %7'si.
 
-## Yöntem
+## Neler yaptım
 
-1. **Keşifçi veri analizi:** Eksik değerler, özet istatistikler, fiyat dağılımı, mesafe ve yıl ile fiyat ilişkisi.
-2. **Temizleme:** Fiyatla ilgisi olmayan sütunlar (`vin`, `seller`, `saledate`, `state`) çıkarıldı. Eksik değerli satırlar, 500 $'ın altındaki satışlar ve 500.000 milin üzerindeki araçlar elendi. Satış fiyatındaki aykırı değerler IQR yöntemiyle filtrelendi.
-3. **Kodlama:** Kategorik sütunlar (marka, model, donanım, kasa, renk, iç döşeme) `LabelEncoder` ile sayıya çevrildi.
-4. **Model girdileri:** `mmr` sütunu, satıştan önce hesaplanmış bir piyasa değeri tahmini olduğu için veri sızıntısını önlemek amacıyla modelden çıkarıldı. `transmission` ve `condition` bu sürümde modele dahil edilmedi.
-5. **Modelleme:** Veri %80 eğitim, %20 test olarak ayrıldı. Üç model eğitilip R² ve MAE ile karşılaştırıldı.
-6. **Değerlendirme:** Gerçek ve tahmin edilen fiyat grafiği, özellik önem sıralaması ve hata dağılımı.
+1. **Veriye ilk bakış:** Eksik değerler, mantıksız sayılar (999.999 mil, 1 $'lık satışlar).
+2. **Temizleme:**
+   - Sütunları kaymış satırları sildim.
+   - `Ford` / `ford` gibi yazım farklarını birleştirdim, boş renk ve vites bilgisini `bilinmiyor` yaptım.
+   - **`condition` sütunu iki farklı ölçekte girilmişti** (1-5 ve 10-49). Tek ölçeğe getirince durumun fiyatla korelasyonu 0,32'den 0,54'e çıktı.
+   - 500 $ altı / 100.000 $ üstü fiyatları ve mantıksız mesafeleri çıkardım.
+3. **Yeni sütun:** Satış tarihinden aracın satıldığı andaki **yaşını** hesapladım.
+4. **Grafiklerle keşif:** Fiyat dağılımı, yaş, mesafe, durum ve markaya göre fiyat.
+5. **Modeller:** Doğrusal Regresyon, Random Forest ve Gradient Boosting. `mmr` sütunu (önceden hesaplanmış piyasa değeri) fiyatın neredeyse aynısı olduğu için modele verilmedi.
+6. **Değerlendirme:** Gerçek ve tahmin karşılaştırması, fiyat aralığına göre hata, fiyatı belirleyen bilgiler.
+7. **Deneme:** Özellikleri verilen bir aracın fiyatını tahmin eden küçük bir fonksiyon.
 
 ## Kullanılan araçlar
 
-Python, Pandas, NumPy, scikit-learn, XGBoost, Matplotlib, Seaborn, Google Colab
+Python, Pandas, NumPy, scikit-learn, Matplotlib, Seaborn
 
 ## Veri seti
 
-`car_prices.csv`, ABD'de gerçekleşmiş ikinci el araç satışlarını içerir (fiyatlar dolar, mesafe mil cinsinden). Dosya 25 MB'tan büyük olduğu için depoda yer almıyor:
+`car_prices.csv`: ABD'de gerçekleşmiş yaklaşık 560 bin ikinci el araç satışı (fiyatlar dolar, mesafe mil cinsinden). Dosya 25 MB'tan büyük olduğu için depoda yer almıyor:
 
 **[car_prices.csv dosyasını Google Drive'dan indir](https://drive.google.com/file/d/1aVu17u_T_hIAk2yQCP7UTDhcXO4iCcf2/view?usp=sharing)**
 
 ## Çalıştırma
 
-1. `ikinci_el_arac_fiyat_tahmini.ipynb` dosyasını Google Colab'da ya da Jupyter'de aç.
-2. Veri setini indir ve 2. bölümdeki dosya yolunu kendi konumuna göre güncelle.
-3. Hücreleri sırayla çalıştır.
-
-## Geliştirme fikirleri
-
-- `condition` ve `transmission` sütunlarını modele ekleyip etkisini ölçmek
-- Satış anındaki araç yaşı gibi yeni özellikler türetmek
-- Doğrusal model için one-hot ya da target encoding denemek
-- Çapraz doğrulama (cross-validation) ile sonuçların kararlılığını ölçmek
+1. `ikinci_el_arac_fiyat_tahmini.ipynb` dosyasını Jupyter ya da Google Colab'da aç.
+2. Veri setini indirip notebook ile aynı klasöre koy. Colab'da çalışıyorsan 2. bölümdeki notu takip et.
+3. Hücreleri sırayla çalıştır (tamamı birkaç dakika sürer).
