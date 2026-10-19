@@ -2,7 +2,7 @@
 
 *Predicting used car prices with machine learning (Random Forest, XGBoost, Linear Regression). Notebook in Turkish.*
 
-Manisa Celal Bayar Üniversitesi, Büyük Veri Analistliği bitirme projesi.
+Manisa Celal Bayar Üniversitesi, Büyük Veri Analistliği programı, dönem projesi.
 
 Bir ikinci el aracın satış fiyatını marka, model, yıl, kasa tipi ve kat ettiği mesafe gibi özelliklerinden tahmin eden ve fiyatı en çok hangi özelliklerin belirlediğini inceleyen bir makine öğrenmesi projesi.
 
