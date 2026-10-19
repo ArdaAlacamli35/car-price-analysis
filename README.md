@@ -39,7 +39,7 @@ Python, Pandas, NumPy, scikit-learn, XGBoost, Matplotlib, Seaborn, Google Colab
 
 ## Çalıştırma
 
-1. `BVA_Bitirme_Projesi.ipynb` dosyasını Google Colab'da ya da Jupyter'de aç.
+1. `ikinci_el_arac_fiyat_tahmini.ipynb` dosyasını Google Colab'da ya da Jupyter'de aç.
 2. Veri setini indir ve 2. bölümdeki dosya yolunu kendi konumuna göre güncelle.
 3. Hücreleri sırayla çalıştır.
 
